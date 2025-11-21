@@ -1,3 +1,6 @@
+sudo apt-get install asciinema
+asciinema rec
+
 k3d cluster create demo
 
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
