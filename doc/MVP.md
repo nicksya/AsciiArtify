@@ -13,7 +13,6 @@
 ![helm](.img/asciiartify_demo_img_2.png)  
 - В розділі `DESTINATION` вибираємо `url` локального кластеру та `Namespace` вказуэмо `demo` після чого ArgoCD автоматично визначить параметри додатку використавши маніфести, які знаходяться в репозиторії.  
 ![DESTINATION](.img/asciiartify_demo_img_3.png)  
- 
 - Створюємо додаток кнопкою `CREATE`  
 ![CREATE](.img/asciiartify_demo_img_4.png)
 
@@ -29,21 +28,15 @@
 
 4. Одразу помітно те, що стан здоров'я додатку `ambassador` невизначено, отже розбираємося.
 - Натискаємо три крапки та обираємо `Logs`
-
 ![LOGS](.img/asciiartify_demo_img_8.png)
-
 - Далі `Events`
 ![Events](.img/asciiartify_demo_img_9.png)
 Отже контейнер імедж компоненту `ambassador` має старий формат, що не пітримується наявним container runtime. Конвертувати імедж до нового формату можна за допомогою утиліти `skopeo`
-
 ```bash
 skopeo copy --format v2s2 docker://quay.io/datawire/ambassador:0.51.2 docker://docker.io/mykytakhomenko/ambassador:0.51.2
 ```
-
 Утиліта зберігає конвертований імедж у наш власний репозиторій, тому маємо оновити параметри додатку щоб ArgoCD викачав його та синхронізував сам додаток.
-
 - В [репозиторії з конфігураційними файлами helm](https://github.com/nicksya/go-demo-app/blob/master/helm/values.yaml) додамо у розділ api-gateway.image параметр `repository: docker.io/mykytakhomenko` та робимо Commit
-
 ![FIX](.img/asciiartify_demo_img_10.png)
 
 5. Так як додаток створено із режимом манульноі синхронізаціі то маємо знов синхронізувати або увімкнути автосинхронізацію. У цьому режимі ArgoCD автоматично визначатиме зміни у репозиторіі та одразу вноситиме іх у конфігурацію додатку.
@@ -77,6 +70,5 @@ k8sdiy-api:599e1af#
 curl -F 'image=@./logo.png' localhost:8088/img/
 ```
 - Отримаємо результат прямо в консолі:  
-
 ![Result](.img/asciiartify_demo_img_99.png)  
 
